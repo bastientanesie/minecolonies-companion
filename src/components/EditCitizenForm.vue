@@ -1,6 +1,10 @@
 <template>
   <Modal @close="closeForm">
     <template v-slot:header>Edit citizen: {{ citizen.name }}</template>
+    <template v-slot:actions>
+      <button class="modal-action-list-item" type="button" @click.prevent="closeForm">Cancel</button>
+      <button class="modal-action-list-item" type="button" @click.prevent="handleSubmit">Save changes</button>
+    </template>
 
     <form @submit.prevent="handleSubmit">
       <ul>
@@ -24,10 +28,7 @@
           </ul>
         </li>
       </ul>
-      <div class="modal-action-list">
-        <button class="modal-action-list-item" type="reset" @click.prevent="closeForm">Cancel</button>
-        <button class="modal-action-list-item" type="submit">Save changes</button>
-      </div>
+      <button type="submit" style="display: none;"></button>
     </form>
   </Modal>
 </template>

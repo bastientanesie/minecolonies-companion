@@ -10,9 +10,12 @@
           <div class="modal-body">
             <slot>
               <p>Default modal content</p>
-              <div class="modal-action-list">
-                <button class="modal-action-list-item" type="reset" @click.prevent="$emit('close')">Close</button>
-              </div>
+            </slot>
+          </div>
+
+          <div class="modal-action-list">
+            <slot name="actions">
+              <button class="modal-action-list-item" type="button" @click.prevent="$emit('close')">Close</button>
             </slot>
           </div>
         </div>
@@ -27,7 +30,7 @@
     }
 </script>
 
-<style scoped>
+<style>
   .modal-overlay {
     background-color: rgba(0, 0, 0, 0.3);
     bottom: 0;
@@ -45,9 +48,12 @@
   .modal-container {
     background-color: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
     margin: 20px auto;
-    padding: 20px;
     min-width: 500px;
+    overflow-y: auto;
+    padding: 20px;
     transition: all 1s ease;
     z-index: 11;
   }
@@ -57,13 +63,17 @@
     padding: 0;
   }
 
+  .modal-body {
+    flex: 1 1 auto;
+  }
+
   .modal-action-list {
     display: flex;
     flex-direction: row;
   }
 
   .modal-action-list-item {
-    margin: 0;
+    margin: 20px 0;
   }
 
   .modal-action-list-item:not(:first-child) {

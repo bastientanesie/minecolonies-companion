@@ -2,6 +2,7 @@
   "name": "minecolonies-companion",
   "version": "0.1.0",
   "private": true,
+  "title": "Minecolonies Companion",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

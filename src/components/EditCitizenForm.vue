@@ -46,7 +46,7 @@
                 availableSkills: SKILLS,
                 availableJobs: JOBS,
                 name: this.citizen.name,
-                job: this.citizen.job || "",
+                job: this.citizen.job || '',
                 skills: Object.assign({}, this.citizen.skills)
             };
         },
@@ -70,7 +70,7 @@
                     this.skills[key] = parseInt(this.skills[key]);
                 }
 
-                await this.$store.dispatch('editCitizen', {
+                await this.$store.dispatch('citizen/edit', {
                     citizenId: this.citizen.id,
                     name: this.name,
                     job: this.job,
@@ -80,7 +80,7 @@
                 this.closeForm();
             },
             closeForm() {
-                this.$store.dispatch('app/hideEditCitizenForm');
+                this.$store.dispatch('citizen/selectToEdit', null);
             }
         }
     }

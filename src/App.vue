@@ -33,18 +33,16 @@
         },
         computed: {
             // // 3 ways to declare computed properties and access Vuex store
-            // count() {
-            //     return this.$store.state.count;
+            // citizens() {
+            //     return this.$store.state.citizen.citizens;
             // },
             // ...mapState({
-            //     count: state => state.count,
-            // })
-            ...mapState([
-                'citizens'
+            //     citizens: (state) => state.citizen.citizens,
+            // }),
+            ...mapState('citizen', [
+                'citizens',
+                'editedCitizen'
             ]),
-            editedCitizen() {
-                return this.$store.state.app.editedCitizen;
-            },
         },
         methods: {
             showNewCitizenForm() {

@@ -11,14 +11,14 @@
           <label for="citizen_job">Job</label>
           <select name="job" id="citizen_job" v-model="job">
             <option value="">Unemployed</option>
-            <option v-for="(job, id) in availableJobs" :key="id" :value="id">{{ job.name }}</option>
+            <option v-for="job in availableJobs" :key="job.id" :value="job.id">{{ job.name }}</option>
           </select>
         </li>
         <li>Skills:
           <ul>
-            <li v-for="skill in availableSkills" :key="skill.key">
-              <label :for="`citizen_skill_${skill.key}`">{{ skill.name }}</label>
-              <input :name="`skills[${skill.key}]`" :id="`citizen_skill_${skill.key}`" v-model="skills[skill.key]" type="number" min="1">
+            <li v-for="skill in availableSkills" :key="skill.id">
+              <label :for="`citizen_skill_${skill.id}`">{{ skill.name }}</label>
+              <input :name="`skills[${skill.id}]`" :id="`citizen_skill_${skill.id}`" v-model="skills[skill.id]" type="number" min="1">
             </li>
           </ul>
         </li>
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-    import { SKILLS } from '../domain/skills';
-    import { JOBS } from '../domain/jobs';
+    import availableSkills from '../domain/skills';
+    import availableJobs from '../domain/jobs';
     import Citizen from '../domain/models/Citizen';
 
     /**
@@ -43,8 +43,8 @@
         name: 'EditCitizenForm',
         data() {
             return {
-                availableSkills: SKILLS,
-                availableJobs: JOBS,
+                availableSkills,
+                availableJobs,
                 name: this.citizen.name,
                 job: this.citizen.job || '',
                 skills: Object.assign({}, this.citizen.skills)
@@ -61,13 +61,6 @@
                 const name = this.name && this.name.trim();
                 if (! name) {
                     return;
-                }
-
-                for (const key in this.skills) {
-                    if (! Object.prototype.hasOwnProperty.call(this.skills, key)) {
-                        continue;
-                    }
-                    this.skills[key] = parseInt(this.skills[key]);
                 }
 
                 await this.$store.dispatch('citizen/edit', {

@@ -11,7 +11,7 @@
 
 <script>
     import Citizen from '../domain/models/Citizen';
-    import { JOBS } from '../domain/jobs';
+    import { findById as findJobById } from '../domain/jobs';
 
     export default {
         name: "CitizenListItem",
@@ -23,12 +23,11 @@
         },
         computed: {
             jobTitle() {
-                if (this.citizen.job
-                  && Object.prototype.hasOwnProperty.call(JOBS, this.citizen.job)
-                ) {
-                    return JOBS[this.citizen.job].name;
+                if (! this.citizen.job) {
+                    return 'Unemployed';
                 }
-                return 'Unemployed';
+                const job = findJobById(this.citizen.job);
+                return (job) ? job.name : 'Unemployed';
             }
         },
         methods: {

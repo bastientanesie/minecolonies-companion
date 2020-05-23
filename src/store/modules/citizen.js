@@ -1,6 +1,6 @@
 import Storage from '../../infrastructure/Storage';
 import Citizen from '../../domain/models/Citizen';
-import { JOBS } from '../../domain/jobs';
+import { exists as jobExists } from '../../domain/jobs';
 
 export default {
     namespaced: true,
@@ -10,11 +10,15 @@ export default {
             editedCitizen: null
         };
     },
+    getters: {
+        findById: (state) => (citizenId) => {
+            return state.citizens.find((citizen) => {
+                return citizen.id === citizenId;
+            });
+        }
+    },
     mutations: {
         create(state, citizen) {
-            if (! citizen.job) {
-                citizen.job = null;
-            }
             state.citizens.push(citizen);
             Storage.save(state.citizens);
         },
@@ -22,7 +26,7 @@ export default {
             const citizenIndex = state.citizens.indexOf(citizen);
 
             citizen.name = payload.name;
-            citizen.job = payload.job || null;
+            citizen.job = payload.job;
             citizen.skills = payload.skills;
 
             state.citizens[citizenIndex] = citizen;
@@ -39,25 +43,29 @@ export default {
     actions: {
         add(context, {name, job, skills}) {
             return new Promise((resolve) => {
+                // filtering & sanitizing
+                for (const key in skills) {
+                    if (! Object.prototype.hasOwnProperty.call(skills, key)) {
+                        continue;
+                    }
+                    skills[key] = parseInt(skills[key]);
+                }
+
                 const citizen = new Citizen(
                     Storage.uid++,
                     name,
                     skills
                 );
-                if (job
-                    && Object.prototype.hasOwnProperty.call(JOBS, job)
-                ) {
-                    citizen.job = JOBS[job].name;
-                }
+
+                citizen.job = (job && jobExists(job)) ? job : null;
+
                 context.commit('create', citizen);
                 return resolve();
             });
         },
         remove(context, citizenId) {
             return new Promise((resolve, reject) => {
-                const citizen = context.state.citizens.reduce((result, citizen) => {
-                    return (citizen.id === citizenId) ? citizen : result;
-                }, null);
+                const citizen = context.getters.findById(citizenId);
                 if (citizen === null) {
                     return reject(`Could not find citizen in database`);
                 }
@@ -69,12 +77,19 @@ export default {
         },
         edit(context, {citizenId, ...payload}) {
             return new Promise((resolve, reject) => {
-                const citizen = context.state.citizens.reduce((result, citizen) => {
-                    return (citizen.id === citizenId) ? citizen : result;
-                }, null);
+                const citizen = context.getters.findById(citizenId);
                 if (citizen === null) {
                     return reject(`Could not find citizen in database`);
                 }
+
+                // filtering & sanitizing
+                for (const key in payload.skills) {
+                    if (! Object.prototype.hasOwnProperty.call(payload.skills, key)) {
+                        continue;
+                    }
+                    payload.skills[key] = parseInt(payload.skills[key]);
+                }
+                payload.job = (payload.job && jobExists(payload.job)) ? payload.job : null;
 
                 context.commit('update', {
                     citizen,
@@ -89,12 +104,12 @@ export default {
                     context.commit('setEditedCitizen', null);
                     return resolve();
                 }
-                const citizen = context.state.citizens.reduce((result, citizen) => {
-                    return (citizen.id === citizenId) ? citizen : result;
-                }, null);
+
+                const citizen = context.getters.findById(citizenId);
                 if (citizen === null) {
                     return reject(`Could not find citizen in database`);
                 }
+
                 context.commit('setEditedCitizen', citizen);
                 return resolve();
             });

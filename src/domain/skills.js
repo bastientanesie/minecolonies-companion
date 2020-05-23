@@ -1,46 +1,58 @@
-export const SKILLS = Object.freeze([
+const SKILLS = Object.freeze([
     {
-        key: 'athletics',
+        id: 'athletics',
         name: 'Athletics',
     },
     {
-        key: 'dexterity',
+        id: 'dexterity',
         name: 'Dexterity',
     },
     {
-        key: 'strength',
+        id: 'strength',
         name: 'Strength',
     },
     {
-        key: 'agility',
+        id: 'agility',
         name: 'Agility',
     },
     {
-        key: 'stamina',
+        id: 'stamina',
         name: 'Stamina',
     },
     {
-        key: 'mana',
+        id: 'mana',
         name: 'Mana',
     },
     {
-        key: 'adaptability',
+        id: 'adaptability',
         name: 'Adaptability',
     },
     {
-        key: 'focus',
+        id: 'focus',
         name: 'Focus',
     },
     {
-        key: 'creativity',
+        id: 'creativity',
         name: 'Creativity',
     },
     {
-        key: 'knowledge',
+        id: 'knowledge',
         name: 'Knowledge',
     },
     {
-        key: 'intelligence',
+        id: 'intelligence',
         name: 'Intelligence',
     },
 ]);
+
+export default SKILLS;
+
+export function findById(skillId) {
+    return SKILLS.reduce((result, skill) => {
+        return (skill.id === skillId) ? skill : result;
+    }, null);
+}
+
+export function exists(skillId) {
+    return findById(skillId) !== null;
+}

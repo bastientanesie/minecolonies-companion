@@ -25,9 +25,15 @@ export default {
         update(state, { citizen, payload }) {
             const citizenIndex = state.citizens.indexOf(citizen);
 
-            citizen.name = payload.name;
-            citizen.job = payload.job;
-            citizen.skills = payload.skills;
+            if (payload.name) {
+                citizen.name = payload.name;
+            }
+            if (payload.job) {
+                citizen.job = payload.job;
+            }
+            if (payload.skills) {
+                citizen.skills = payload.skills;
+            }
 
             state.citizens[citizenIndex] = citizen;
             Storage.save(state.citizens);
@@ -83,13 +89,20 @@ export default {
                 }
 
                 // filtering & sanitizing
-                for (const key in payload.skills) {
-                    if (! Object.prototype.hasOwnProperty.call(payload.skills, key)) {
-                        continue;
-                    }
-                    payload.skills[key] = parseInt(payload.skills[key]);
+                if (payload.name) {
+                    payload.name = payload.name.trim();
                 }
-                payload.job = (payload.job && jobExists(payload.job)) ? payload.job : null;
+                if (payload.skills) {
+                    for (const key in payload.skills) {
+                        if (!Object.prototype.hasOwnProperty.call(payload.skills, key)) {
+                            continue;
+                        }
+                        payload.skills[key] = parseInt(payload.skills[key]);
+                    }
+                }
+                if (payload.job) {
+                    payload.job = jobExists(payload.job) ? payload.job : null;
+                }
 
                 context.commit('update', {
                     citizen,
@@ -113,6 +126,23 @@ export default {
                 context.commit('setEditedCitizen', citizen);
                 return resolve();
             });
-        }
+        },
+        assignJob(context, {citizenId, jobId}) {
+            return new Promise((resolve, reject) => {
+                const citizen = context.getters.findById(citizenId);
+                if (citizen === null) {
+                    return reject(`Could not find citizen in database`);
+                }
+                if (! jobExists(jobId)) {
+                    return reject(`Could not find job "${jobId}"`);
+                }
+
+                context.commit('update', {
+                    citizen,
+                    payload: { job: jobId }
+                });
+                return resolve();
+            });
+        },
     }
 };

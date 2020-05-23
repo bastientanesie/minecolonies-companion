@@ -31,6 +31,10 @@
 </script>
 
 <style>
+  .modal.mod-fullpage {
+
+  }
+
   .modal-overlay {
     background-color: rgba(0, 0, 0, 0.3);
     bottom: 0;
@@ -56,6 +60,11 @@
     padding: 20px;
     transition: all 1s ease;
     z-index: 11;
+  }
+
+  .modal.mod-fullpage .modal-container {
+    flex: 1 1 90%;
+    min-width: 90%;
   }
 
   .modal-title {

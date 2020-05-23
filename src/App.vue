@@ -10,6 +10,13 @@
     <NewCitizenForm @close="isNewCitizenFormVisible = false" v-if="isNewCitizenFormVisible" />
 
     <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" />
+
+    <JobAssignmentModal
+      v-if="selectedCitizenForAssignment"
+      :selected-citizen="selectedCitizenForAssignment"
+      :citizens="citizens"
+      @close="$store.dispatch('jobs/selectToAssign', null)"
+    />
   </div>
 </template>
 
@@ -17,6 +24,7 @@
     import CitizenList from './components/CitizenList.vue';
     import NewCitizenForm from './components/NewCitizenForm.vue';
     import EditCitizenForm from './components/EditCitizenForm';
+    import JobAssignmentModal from './components/jobs/AssignmentModal';
     import { mapState } from 'vuex';
 
     export default {
@@ -24,7 +32,8 @@
         components: {
             EditCitizenForm,
             CitizenList,
-            NewCitizenForm
+            NewCitizenForm,
+            JobAssignmentModal
         },
         data: () => {
             return {
@@ -43,11 +52,14 @@
                 'citizens',
                 'editedCitizen'
             ]),
+            ...mapState('jobs', {
+                selectedCitizenForAssignment: (state) => state.selectedCitizen,
+            }),
         },
         methods: {
             showNewCitizenForm() {
                 this.isNewCitizenFormVisible = true;
-            }
+            },
         }
     }
 </script>

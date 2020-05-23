@@ -3,7 +3,7 @@
     <p class="citizen-list-item-column mod-name">{{ citizen.name }}</p>
     <p class="citizen-list-item-column mod-job">{{ jobTitle }}</p>
     <div class="citizen-list-item-column mod-actions">
-      <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('citizen/selectToEdit', citizen.id)">Edit</button>
+      <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('citizens/selectToEdit', citizen.id)">Edit</button>
       <button class="citizen-list-item-action" type="button" @click.prevent="handleDelete">Delete</button>
     </div>
   </article>
@@ -35,7 +35,7 @@
                 if (! confirm(`Are you sure you want to delete ${this.citizen.name}?`)) {
                     return;
                 }
-                await this.$store.dispatch('citizen/remove', this.citizen.id);
+                await this.$store.dispatch('citizens/remove', this.citizen.id);
             }
         }
     }

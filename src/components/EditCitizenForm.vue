@@ -63,7 +63,7 @@
                     return;
                 }
 
-                await this.$store.dispatch('citizen/edit', {
+                await this.$store.dispatch('citizens/edit', {
                     citizenId: this.citizen.id,
                     name: this.name,
                     job: this.job,
@@ -73,7 +73,7 @@
                 this.closeForm();
             },
             closeForm() {
-                this.$store.dispatch('citizen/selectToEdit', null);
+                this.$store.dispatch('citizens/selectToEdit', null);
             }
         }
     }

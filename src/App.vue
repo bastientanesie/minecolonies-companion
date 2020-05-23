@@ -39,7 +39,7 @@
             // ...mapState({
             //     citizens: (state) => state.citizen.citizens,
             // }),
-            ...mapState('citizen', [
+            ...mapState('citizens', [
                 'citizens',
                 'editedCitizen'
             ]),

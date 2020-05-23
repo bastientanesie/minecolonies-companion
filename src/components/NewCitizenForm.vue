@@ -54,7 +54,7 @@
                     return;
                 }
 
-                await this.$store.dispatch('citizen/add', {
+                await this.$store.dispatch('citizens/add', {
                     name: this.newCitizen.name,
                     job: this.newCitizen.job,
                     skills: this.newCitizen.skills

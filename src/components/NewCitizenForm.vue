@@ -1,15 +1,15 @@
 <template>
-  <div class="overlay" @click.prevent="closeForm">
+  <div class="overlay" @click.prevent="closeForm" @keyup.escape="closeForm">
     <form class="form" @submit.prevent="handleSubmit" @click.stop="">
       <h2 class="form-title">New citizen</h2>
       <ul>
         <li>
           <label for="citizen_name">Name</label>
-          <input name="citizen_name" id="citizen_name" v-model="newCitizen.name" type="text">
+          <input name="name" id="citizen_name" v-model="newCitizen.name" type="text" v-focus>
         </li>
         <li>
           <label for="citizen_job">Job</label>
-          <select name="citizen_job" id="citizen_job" v-model="newCitizen.job">
+          <select name="job" id="citizen_job" v-model="newCitizen.job">
             <option value="">Unemployed</option>
             <option v-for="(job, id) in jobs" :key="id" :value="id">{{ job.name }}</option>
           </select>
@@ -18,7 +18,7 @@
           <ul>
             <li v-for="(label, key) in skills" :key="key">
               <label :for="'citizen_skill_' + key">{{ label }}</label>
-              <input :name="'citizen_skill_' + key" :id="'citizen_skill_' + key" v-model="newCitizen.skills[key]" type="number" min="1">
+              <input :name="`skills[${key}]`" :id="'citizen_skill_' + key" v-model="newCitizen.skills[key]" type="number" min="1">
             </li>
           </ul>
         </li>

@@ -1,11 +1,11 @@
 <template>
-  <div class="overlay" @click.prevent="closeForm">
+  <div class="overlay" @click.prevent="closeForm" @keyup.escape="closeForm">
     <form class="form" @submit.prevent="handleSubmit" @click.stop="">
       <h2 class="form-title">Edit citizen</h2>
       <ul>
         <li>
           <label for="citizen_name">Name</label>
-          <input name="name" id="citizen_name" v-model="name" type="text">
+          <input name="name" id="citizen_name" v-model="name" type="text" v-focus>
         </li>
         <li>
           <label for="citizen_job">Job</label>

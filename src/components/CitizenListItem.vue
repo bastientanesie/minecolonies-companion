@@ -1,7 +1,7 @@
 <template>
   <tr>
     <th>{{ citizen.name }}</th>
-    <td>{{ citizen.job }}</td>
+    <td>{{ citizen.job || "Unemployed" }}</td>
     <td>
       <button type="button" @click.prevent="handleDelete">Delete</button>
     </td>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import Citizen from '../models/Citizen';
+    import Citizen from '../domain/models/Citizen';
 
     export default {
         name: "CitizenListItem",
@@ -17,18 +17,14 @@
             citizen: {
                 type: Citizen,
                 required: true
-            },
-            deleteCitizen: {
-                type: Function,
-                required: true
             }
         },
         methods: {
-            handleDelete() {
+            async handleDelete() {
                 if (! confirm(`Are you sure you want to delete ${this.citizen.name}?`)) {
                     return;
                 }
-                this.deleteCitizen(this.citizen);
+                await this.$store.dispatch('removeCitizen', this.citizen.id);
             }
         }
     }

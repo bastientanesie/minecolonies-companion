@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" :deleteCitizen="deleteCitizen"/>
+      <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" />
     </tbody>
   </table>
 </template>
@@ -24,10 +24,6 @@
         props: {
             items: {
                 type: Array,
-                required: true
-            },
-            deleteCitizen: {
-                type: Function,
                 required: true
             }
         }

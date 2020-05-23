@@ -1,7 +1,8 @@
 <template>
-  <div class="overlay" @click.prevent="closeForm" @keyup.escape="closeForm">
-    <form class="form" @submit.prevent="handleSubmit" @click.stop="">
-      <h2 class="form-title">New citizen</h2>
+  <Modal @close="closeForm">
+    <template v-slot:header>New citizen</template>
+
+    <form @submit.prevent="handleSubmit">
       <ul>
         <li>
           <label for="citizen_name">Name</label>
@@ -23,23 +24,27 @@
           </ul>
         </li>
       </ul>
-      <div class="action-list">
-        <button class="action-list-item" type="reset" @click.prevent="closeForm">Cancel</button>
-        <button class="action-list-item" type="submit">Create citizen</button>
+      <div class="modal-action-list">
+        <button class="modal-action-list-item" type="reset" @click.prevent="closeForm">Cancel</button>
+        <button class="modal-action-list-item" type="submit">Create citizen</button>
       </div>
     </form>
-  </div>
+  </Modal>
 </template>
 
 <script>
     import skills from '../domain/skills';
     import jobs from '../domain/jobs';
+    import Modal from './Modal';
 
     /**
      * @event close
      */
     export default {
         name: 'NewCitizenForm',
+        components: {
+            Modal
+        },
         data() {
             return {
                 newCitizen: this.getInitialState(),
@@ -83,44 +88,5 @@
 </script>
 
 <style scoped>
-  .overlay {
-    background-color: rgba(0, 0, 0, 0.3);
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 10;
-  }
 
-  .form {
-    background-color: #ffffff;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
-    margin: 20px auto;
-    padding: 20px;
-    min-width: 500px;
-  }
-
-  .form-title {
-    margin: 0;
-    padding: 0;
-  }
-
-  .action-list {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .action-list-item {
-    margin: 0;
-  }
-
-  .action-list-item:not(:first-child) {
-    margin-left: 20px;
-  }
-  .action-list-item:first-child {
-    margin-left: auto;
-  }
 </style>

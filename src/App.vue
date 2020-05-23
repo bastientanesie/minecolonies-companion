@@ -16,7 +16,7 @@
 <script>
     import CitizenList from './components/CitizenList.vue';
     import NewCitizenForm from './components/NewCitizenForm.vue';
-    import EditCitizenForm from "./components/EditCitizenForm";
+    import EditCitizenForm from './components/EditCitizenForm';
     import { mapState } from 'vuex';
 
     export default {
@@ -60,8 +60,5 @@
   body {
     font-size: 16px;
     line-height: calc(20 / 16);
-  }
-
-  #app {
   }
 </style>

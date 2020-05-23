@@ -1,15 +1,17 @@
 <template>
   <article class="citizen-list-item">
     <p class="citizen-list-item-column mod-name">{{ citizen.name }}</p>
-    <p class="citizen-list-item-column mod-job">{{ citizen.job || "Unemployed" }}</p>
+    <p class="citizen-list-item-column mod-job">{{ jobTitle }}</p>
     <div class="citizen-list-item-column mod-actions">
-      <button type="button" @click.prevent="handleDelete">Delete</button>
+      <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('app/showEditCitizenForm', citizen.id)">Edit</button>
+      <button class="citizen-list-item-action" type="button" @click.prevent="handleDelete">Delete</button>
     </div>
   </article>
 </template>
 
 <script>
     import Citizen from '../domain/models/Citizen';
+    import { JOBS } from '../domain/jobs';
 
     export default {
         name: "CitizenListItem",
@@ -17,6 +19,16 @@
             citizen: {
                 type: Citizen,
                 required: true
+            }
+        },
+        computed: {
+            jobTitle() {
+                if (this.citizen.job
+                  && Object.prototype.hasOwnProperty.call(JOBS, this.citizen.job)
+                ) {
+                    return JOBS[this.citizen.job].name;
+                }
+                return 'Unemployed';
             }
         },
         methods: {
@@ -55,5 +67,12 @@
   }
   .citizen-list-item:hover .citizen-list-item-column {
     background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .citizen-list-item-action {
+    margin: 0;
+  }
+  .citizen-list-item-action:not(:first-child) {
+    margin-left: 10px;
   }
 </style>

@@ -8,17 +8,21 @@
     <button type="button" @click.prevent="showNewCitizenForm">Add a citizen</button>
 
     <NewCitizenForm @close="isNewCitizenFormVisible = false" v-if="isNewCitizenFormVisible" />
+
+    <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" />
   </div>
 </template>
 
 <script>
     import CitizenList from './components/CitizenList.vue';
     import NewCitizenForm from './components/NewCitizenForm.vue';
+    import EditCitizenForm from "./components/EditCitizenForm";
     import { mapState } from 'vuex';
 
     export default {
         name: 'App',
         components: {
+            EditCitizenForm,
             CitizenList,
             NewCitizenForm
         },
@@ -35,12 +39,12 @@
             // ...mapState({
             //     count: state => state.count,
             // })
-            citizens() {
-                return this.$store.state.citizens;
-            },
             ...mapState([
-                'jobs'
-            ])
+                'citizens'
+            ]),
+            editedCitizen() {
+                return this.$store.state.app.editedCitizen;
+            },
         },
         methods: {
             showNewCitizenForm() {

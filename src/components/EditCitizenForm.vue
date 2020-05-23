@@ -16,9 +16,9 @@
         </li>
         <li>Skills:
           <ul>
-            <li v-for="(label, key) in availableSkills" :key="key">
-              <label :for="'citizen_skill_' + key">{{ label }}</label>
-              <input :name="`skills[${key}]`" :id="'citizen_skill_' + key" v-model="skills[key]" type="number" min="1">
+            <li v-for="skill in availableSkills" :key="skill.key">
+              <label :for="`citizen_skill_${skill.key}`">{{ skill.name }}</label>
+              <input :name="`skills[${skill.key}]`" :id="`citizen_skill_${skill.key}`" v-model="skills[skill.key]" type="number" min="1">
             </li>
           </ul>
         </li>
@@ -46,7 +46,7 @@
                 availableSkills: SKILLS,
                 availableJobs: JOBS,
                 name: this.citizen.name,
-                job: this.citizen.job,
+                job: this.citizen.job || "",
                 skills: Object.assign({}, this.citizen.skills)
             };
         },

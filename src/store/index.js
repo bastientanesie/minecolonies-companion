@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     mutations: {
         addCitizen(state, citizen) {
+            if (! citizen.job) {
+                citizen.job = null;
+            }
             state.citizens.push(citizen);
             Storage.save(state.citizens);
         },
@@ -26,7 +29,7 @@ export default new Vuex.Store({
             const citizenIndex = state.citizens.indexOf(citizen);
 
             citizen.name = payload.name;
-            citizen.job = payload.job;
+            citizen.job = payload.job || null;
             citizen.skills = payload.skills;
 
             state.citizens[citizenIndex] = citizen;

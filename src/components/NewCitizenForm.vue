@@ -16,9 +16,9 @@
         </li>
         <li>Skills:
           <ul>
-            <li v-for="(label, key) in skills" :key="key">
-              <label :for="'citizen_skill_' + key">{{ label }}</label>
-              <input :name="`skills[${key}]`" :id="'citizen_skill_' + key" v-model="newCitizen.skills[key]" type="number" min="1">
+            <li v-for="skill in skills" :key="skill.key">
+              <label :for="`citizen_skill_${skill.key}`">{{ skill.name }}</label>
+              <input :name="`skills[${skill.key}]`" :id="`citizen_skill_${skill.key}`" v-model="newCitizen.skills[skill.key]" type="number" min="1">
             </li>
           </ul>
         </li>
@@ -68,12 +68,10 @@
                     job: '',
                     skills: {}
                 };
-                for (const key in SKILLS) {
-                    if (! Object.prototype.hasOwnProperty.call(SKILLS, key)) {
-                        continue;
-                    }
-                    obj.skills[key] = 1;
-                }
+
+                SKILLS.forEach((skill) => {
+                    obj.skills[skill.key] = 1;
+                });
                 return obj;
             },
             closeForm() {

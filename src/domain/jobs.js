@@ -214,6 +214,54 @@ const JOBS = Object.freeze([
             primary: ['knowledge'],
             secondary: ['mana']
         }
+    },
+    {
+        id: 'knight',
+        name: 'Knight',
+        skills: {
+            primary: ['adaptability'],
+            secondary: ['stamina']
+        }
+    },
+    {
+        id: 'teacher',
+        name: 'Teacher',
+        skills: {
+            primary: ['intelligence', 'knowledge'],
+            secondary: ['mana']
+        }
+    },
+    {
+        id: 'pupil',
+        name: 'Pupil',
+        skills: {
+            primary: ['intelligence', 'knowledge'],
+            secondary: ['mana']
+        }
+    },
+    {
+        id: 'plant',
+        name: 'Planter',
+        skills: {
+            primary: ['agility'],
+            secondary: ['dexterity']
+        }
+    },
+    {
+        id: 'mechanic',
+        name: 'Mechanic',
+        skills: {
+            primary: ['knowledge'],
+            secondary: ['agility']
+        }
+    },
+    {
+        id: 'glassblower',
+        name: 'Glassblower',
+        skills: {
+            primary: ['creativity'],
+            secondary: ['focus']
+        }
     }
 ]);
 

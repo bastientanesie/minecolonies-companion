@@ -69,12 +69,12 @@
                 'citizens',
                 'editedCitizen'
             ]),
-            ...mapState('houses', [
-                'houses'
-            ]),
             ...mapState('jobs', {
                 selectedCitizenForAssignment: (state) => state.selectedCitizen,
             }),
+            houses() {
+                return this.$store.getters[`houses/getSorted`];
+            },
         },
         methods: {
             showNewCitizenForm() {

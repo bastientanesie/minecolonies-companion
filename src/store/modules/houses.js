@@ -13,7 +13,12 @@ export default {
             return state.houses.find((house) => {
                 return house.id === houseId;
             });
-        }
+        },
+        getSorted(state) {
+            return [...state.houses].sort((houseA, houseB) => {
+                return houseA.name.localeCompare(houseB.name);
+            });
+        },
     },
     actions: {
         add(context, {name, beds}) {

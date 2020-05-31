@@ -15,7 +15,12 @@ export default {
             return state.citizens.find((citizen) => {
                 return citizen.id === citizenId;
             });
-        }
+        },
+        sortByName(state) {
+            return [...state.citizens].sort((citizenA, citizenB) => {
+                return citizenA.name.localeCompare(citizenB.name);
+            });
+        },
     },
     mutations: {
         create(state, citizen) {

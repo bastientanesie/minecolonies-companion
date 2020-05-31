@@ -66,7 +66,6 @@
             //     citizens: (state) => state.citizen.citizens,
             // }),
             ...mapState('citizens', [
-                'citizens',
                 'editedCitizen'
             ]),
             ...mapState('jobs', {
@@ -74,6 +73,9 @@
             }),
             houses() {
                 return this.$store.getters[`houses/getSorted`];
+            },
+            citizens() {
+                return this.$store.getters[`citizens/sortByName`];
             },
         },
         methods: {

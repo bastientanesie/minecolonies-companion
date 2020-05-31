@@ -1,26 +1,42 @@
 <template>
-  <section class="house-list">
-    <ul class="house-list-header">
-      <li class="house-list-header-item mod-name">Name</li>
-      <li class="house-list-header-item mod-job">Beds</li>
-      <li class="house-list-header-item mod-actions"></li>
-    </ul>
-    <HouseListItem v-for="house in items" :key="house.id" :house="house" />
-  </section>
+  <div>
+    <section class="house-list">
+      <ul class="house-list-header">
+        <li class="house-list-header-item mod-name">Name</li>
+        <li class="house-list-header-item mod-job">Beds</li>
+        <li class="house-list-header-item mod-actions"></li>
+      </ul>
+      <HouseListItem v-for="house in items" :key="house.id" :house="house" @edit="onEdit" />
+    </section>
+
+    <EditHouseForm :house="editedHouse" v-if="editedHouse !== null" @close="editedHouse = null" />
+  </div>
 </template>
 
 <script>
     import HouseListItem from './HouseListItem';
+    import EditHouseForm from './EditHouseForm';
 
     export default {
         name: 'HouseList',
         components: {
-            HouseListItem
+            HouseListItem,
+            EditHouseForm
+        },
+        data() {
+            return {
+                editedHouse: null
+            };
         },
         props: {
             items: {
                 type: Array,
                 required: true
+            }
+        },
+        methods: {
+            onEdit(house) {
+                this.editedHouse = house;
             }
         }
     }

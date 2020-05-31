@@ -4,6 +4,7 @@
     <p class="house-list-item-column mod-beds">{{ house.bedCount }}</p>
     <div class="house-list-item-column mod-actions">
       <button class="house-list-item-action" type="button" @click.prevent="$emit('edit', house)">Edit</button>
+      <button class="house-list-item-action" type="button" @click.prevent="handleDelete">Delete</button>
     </div>
   </article>
 </template>
@@ -17,6 +18,14 @@
             house: {
                 type: House,
                 required: true
+            }
+        },
+        methods: {
+            async handleDelete() {
+                if (! confirm(`Are you sure you want to delete house "${this.house.name}"?`)) {
+                    return;
+                }
+                await this.$store.dispatch('houses/remove', this.house.id);
             }
         }
     }

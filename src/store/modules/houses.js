@@ -54,6 +54,18 @@ export default {
                 return resolve();
             });
         },
+        remove(context, houseId) {
+            return new Promise((resolve, reject) => {
+                const house = context.getters.findById(houseId);
+                if (house === null) {
+                    return reject(`Could not find house in database`);
+                }
+
+                const houseIndex = context.state.houses.indexOf(house);
+                context.commit('deleteAtIndex', houseIndex);
+                return resolve();
+            });
+        },
     },
     mutations: {
         create(state, house) {
@@ -71,6 +83,10 @@ export default {
             }
 
             state.houses[houseIndex] = house;
+            Storage.save(state.houses);
+        },
+        deleteAtIndex(state, index) {
+            state.houses.splice(index, 1);
             Storage.save(state.houses);
         },
     },

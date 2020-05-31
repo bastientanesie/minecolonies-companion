@@ -34,9 +34,9 @@
 </template>
 
 <script>
-    import skills from '../domain/skills';
-    import jobs from '../domain/jobs';
-    import Modal from './Modal';
+    import skills from '../../domain/skills';
+    import jobs from '../../domain/jobs';
+    import Modal from '../Modal';
 
     /**
      * @event close

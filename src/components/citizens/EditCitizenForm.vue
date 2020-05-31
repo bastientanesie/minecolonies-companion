@@ -34,10 +34,10 @@
 </template>
 
 <script>
-    import availableSkills from '../domain/skills';
-    import availableJobs from '../domain/jobs';
-    import Citizen from '../domain/models/Citizen';
-    import Modal from './Modal';
+    import availableSkills from '../../domain/skills';
+    import availableJobs from '../../domain/jobs';
+    import Citizen from '../../domain/models/Citizen';
+    import Modal from '../Modal';
 
     /**
      * @event close

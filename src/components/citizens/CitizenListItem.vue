@@ -11,8 +11,8 @@
 </template>
 
 <script>
-    import Citizen from '../domain/models/Citizen';
-    import { findById as findJobById } from '../domain/jobs';
+    import Citizen from '../../domain/models/Citizen';
+    import { findById as findJobById } from '../../domain/jobs';
 
     export default {
         name: "CitizenListItem",

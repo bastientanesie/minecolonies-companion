@@ -33,10 +33,10 @@
 </template>
 
 <script>
-    import CitizenList from './components/CitizenList.vue';
-    import NewCitizenForm from './components/NewCitizenForm.vue';
-    import EditCitizenForm from './components/EditCitizenForm';
-    import JobAssignmentModal from './components/jobs/AssignmentModal';
+    import CitizenList from './components/citizens/CitizenList.vue';
+    import NewCitizenForm from './components/citizens/NewCitizenForm.vue';
+    import EditCitizenForm from './components/citizens/EditCitizenForm';
+    import JobAssignmentModal from './components/citizens/AssignmentModal';
     import NewHouseForm from './components/houses/NewHouseForm';
     import HouseList from './components/houses/HouseList';
     import { mapState } from 'vuex';

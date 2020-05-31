@@ -1,4 +1,4 @@
-import Citizen from '../domain/models/Citizen';
+import Citizen from '../../domain/models/Citizen';
 
 const LOCAL_STORAGE_KEY = 'mc-citizen-list';
 

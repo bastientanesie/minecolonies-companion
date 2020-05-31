@@ -1,4 +1,4 @@
-import Storage from '../../infrastructure/Storage';
+import Storage from '../../infrastructure/Storage/Citizen';
 import Citizen from '../../domain/models/Citizen';
 import { exists as jobExists } from '../../domain/jobs';
 

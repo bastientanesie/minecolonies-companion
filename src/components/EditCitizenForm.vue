@@ -14,7 +14,7 @@
         </li>
         <li>
           <label for="citizen_job">Job</label>
-          <select name="job" id="citizen_job" v-model="job">
+          <select name="job" id="citizen_job" v-model="job" disabled>
             <option value="">Unemployed</option>
             <option v-for="job in availableJobs" :key="job.id" :value="job.id">{{ job.name }}</option>
           </select>
@@ -72,7 +72,6 @@
                 await this.$store.dispatch('citizens/edit', {
                     citizenId: this.citizen.id,
                     name: this.name,
-                    job: this.job,
                     skills: this.skills
                 });
 

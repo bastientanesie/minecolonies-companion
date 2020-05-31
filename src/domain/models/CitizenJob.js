@@ -1,16 +1,16 @@
 export default class CitizenJob {
     id;
     name;
-    primarySkill;
-    secondarySkill;
-    primarySkillLevel;
-    secondarySkillLevel;
+    primarySkills;
+    secondarySkills;
+    primarySkillLevels;
+    secondarySkillLevels;
 
-    constructor(id, name, primarySkill, secondarySkill) {
+    constructor(id, name, primarySkills, secondarySkills) {
         this.id = id;
         this.name = name;
-        this.primarySkill = primarySkill;
-        this.secondarySkill = secondarySkill;
+        this.primarySkills = primarySkills;
+        this.secondarySkills = secondarySkills;
     }
 
     static fromJob(job) {
@@ -30,23 +30,46 @@ export default class CitizenJob {
     }
 
     setCitizenLevels(citizenSkills) {
-        if (! Object.prototype.hasOwnProperty.call(citizenSkills, this.primarySkill)) {
-            throw new Error(`Citizen skills object does not contain required skill: ${this.primarySkill}`);
-        }
-        this.primarySkillLevel = citizenSkills[this.primarySkill];
+        this.primarySkillLevels = {};
 
-        if (this.secondarySkill) {
-            if (! Object.prototype.hasOwnProperty.call(citizenSkills, this.secondarySkill)) {
-                throw new Error(`Citizen skills object does not contain required skill: ${this.secondarySkill}`);
+        this.primarySkills.forEach((skill) => {
+            if (! Object.prototype.hasOwnProperty.call(citizenSkills, skill)) {
+                throw new Error(`Citizen skills object does not contain required skill: ${skill}`);
             }
-            this.secondarySkillLevel = citizenSkills[this.secondarySkill];
+
+            this.primarySkillLevels[skill] = citizenSkills[skill];
+        });
+
+        if (this.secondarySkills) {
+            this.secondarySkillLevels = {};
+
+            this.secondarySkills.forEach((skill) => {
+                if (! Object.prototype.hasOwnProperty.call(citizenSkills, skill)) {
+                    throw new Error(`Citizen skills object does not contain required skill: ${skill}`);
+                }
+
+                this.secondarySkillLevels[skill] = citizenSkills[skill];
+            });
         }
     }
 
     getScore() {
-        if (this.secondarySkill) {
-            return (parseInt(this.primarySkillLevel) * 2) + parseInt(this.secondarySkillLevel);
+        let score = 0;
+
+        for (const key in this.primarySkillLevels) {
+            if (! Object.prototype.hasOwnProperty.call(this.primarySkillLevels, key)) {
+                continue;
+            }
+            score += this.primarySkillLevels[key] * 2;
         }
-        return parseInt(this.primarySkillLevel) * 2;
+
+        for (const key in this.secondarySkillLevels) {
+            if (! Object.prototype.hasOwnProperty.call(this.secondarySkillLevels, key)) {
+                continue;
+            }
+            score += parseInt(this.secondarySkillLevels[key]);
+        }
+
+        return score;
     }
 }

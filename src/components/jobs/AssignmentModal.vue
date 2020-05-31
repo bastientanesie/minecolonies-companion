@@ -19,10 +19,8 @@
         <tr v-for="job in citizenJobs" :key="job.id" :class="{'current-job': (selectedCitizen.job === job.id)}">
           <th style="text-align: left">{{ job.name }}</th>
           <td>
-            {{ job.primarySkill }}: {{ job.primarySkillLevel }}
-            <template v-if="job.secondarySkill">
-              <br>{{ job.secondarySkill }}: {{ job.secondarySkillLevel }}
-            </template>
+            <div v-for="skill in job.primarySkills" :key="skill">{{findSkillById(skill).name}}</div>
+            <div v-for="skill in job.secondarySkills" :key="skill">{{findSkillById(skill).name}}</div>
           </td>
           <td>{{ job.getScore() }}</td>
           <td>
@@ -44,6 +42,7 @@
     import Citizen from '../../domain/models/Citizen';
     import CitizenJob from '../../domain/models/CitizenJob';
     import availableJobs, { findById as findJobById } from '../../domain/jobs';
+    import { findById as findSkillById } from '../../domain/skills';
 
     export default {
         name: 'AssignmentModal',
@@ -82,6 +81,9 @@
             },
             findJobById(jobId) {
                 return findJobById(jobId);
+            },
+            findSkillById(skillId) {
+                return findSkillById(skillId);
             },
             getWorkerForJob(job) {
                 return this.otherCitizens.filter((citizen) => {

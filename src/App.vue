@@ -1,15 +1,25 @@
 <template>
   <div id="app">
 <!--    <img alt="Vue logo" src="./assets/logo.png">-->
-    <h2>Citizens</h2>
-    <p v-show="citizens.length < 1">Start by adding a citizen, click on the button below.</p>
-    <CitizenList :items="citizens" v-show="citizens.length > 0" />
 
-    <button type="button" @click.prevent="showNewCitizenForm">Add a citizen</button>
+    <section>
+      <h2>Citizens</h2>
+      <p v-show="citizens.length < 1">Start by adding a citizen, click on the button below.</p>
+      <CitizenList :items="citizens" v-show="citizens.length > 0" />
+
+      <button type="button" @click.prevent="showNewCitizenForm">Add a citizen</button>
+    </section>
 
     <NewCitizenForm @close="isNewCitizenFormVisible = false" v-if="isNewCitizenFormVisible" />
-
     <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" />
+
+    <section>
+      <h2>Houses</h2>
+      <p v-show="houses.length < 1">Start by adding a house, click on the button below.</p>
+      <button type="button" @click.prevent="isNewHouseFormVisible = true">Add a house</button>
+    </section>
+
+    <NewHouseForm @close="isNewHouseFormVisible = false" v-if="isNewHouseFormVisible" />
 
     <JobAssignmentModal
       v-if="selectedCitizenForAssignment"
@@ -25,6 +35,7 @@
     import NewCitizenForm from './components/NewCitizenForm.vue';
     import EditCitizenForm from './components/EditCitizenForm';
     import JobAssignmentModal from './components/jobs/AssignmentModal';
+    import NewHouseForm from './components/houses/NewHouseForm';
     import { mapState } from 'vuex';
 
     export default {
@@ -33,11 +44,13 @@
             EditCitizenForm,
             CitizenList,
             NewCitizenForm,
-            JobAssignmentModal
+            JobAssignmentModal,
+            NewHouseForm
         },
         data: () => {
             return {
-                isNewCitizenFormVisible: false
+                isNewCitizenFormVisible: false,
+                isNewHouseFormVisible: false,
             };
         },
         computed: {
@@ -51,6 +64,9 @@
             ...mapState('citizens', [
                 'citizens',
                 'editedCitizen'
+            ]),
+            ...mapState('houses', [
+                'houses'
             ]),
             ...mapState('jobs', {
                 selectedCitizenForAssignment: (state) => state.selectedCitizen,

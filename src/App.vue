@@ -16,6 +16,8 @@
     <section>
       <h2>Houses</h2>
       <p v-show="houses.length < 1">Start by adding a house, click on the button below.</p>
+      <HouseList :items="houses" v-show="houses.length > 0" />
+
       <button type="button" @click.prevent="isNewHouseFormVisible = true">Add a house</button>
     </section>
 
@@ -36,6 +38,7 @@
     import EditCitizenForm from './components/EditCitizenForm';
     import JobAssignmentModal from './components/jobs/AssignmentModal';
     import NewHouseForm from './components/houses/NewHouseForm';
+    import HouseList from './components/houses/HouseList';
     import { mapState } from 'vuex';
 
     export default {
@@ -45,7 +48,8 @@
             CitizenList,
             NewCitizenForm,
             JobAssignmentModal,
-            NewHouseForm
+            NewHouseForm,
+            HouseList
         },
         data: () => {
             return {

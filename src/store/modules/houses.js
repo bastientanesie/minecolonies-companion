@@ -14,6 +14,9 @@ export default {
                 return house.id === houseId;
             });
         },
+        exists: (stat, getters) => (houseId) => {
+            return getters.findById(houseId) !== null;
+        },
         getSorted(state) {
             return [...state.houses].sort((houseA, houseB) => {
                 return houseA.name.localeCompare(houseB.name);

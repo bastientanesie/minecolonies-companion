@@ -30,13 +30,16 @@ export default {
         update(state, { citizen, payload }) {
             const citizenIndex = state.citizens.indexOf(citizen);
 
-            if (payload.name) {
+            if (Object.prototype.hasOwnProperty.call(payload, 'name')) {
                 citizen.name = payload.name;
             }
-            if (payload.job) {
+            if (Object.prototype.hasOwnProperty.call(payload, 'job')) {
                 citizen.job = payload.job;
             }
-            if (payload.skills) {
+            if (Object.prototype.hasOwnProperty.call(payload, 'house')) {
+                citizen.house = payload.house;
+            }
+            if (Object.prototype.hasOwnProperty.call(payload, 'skills')) {
                 citizen.skills = payload.skills;
             }
 
@@ -52,7 +55,7 @@ export default {
         }
     },
     actions: {
-        add(context, {name, job, skills}) {
+        add(context, {name, job, house, skills}) {
             return new Promise((resolve) => {
                 // filtering & sanitizing
                 for (const key in skills) {
@@ -69,6 +72,14 @@ export default {
                 );
 
                 citizen.job = (job && jobExists(job)) ? job : null;
+
+                if (Number.isInteger(house)
+                    && context.rootGetters["houses/exists"](house)
+                ) {
+                    citizen.house = parseInt(house);
+                } else {
+                    citizen.house = null;
+                }
 
                 context.commit('create', citizen);
                 return resolve();
@@ -105,8 +116,13 @@ export default {
                         payload.skills[key] = parseInt(payload.skills[key]);
                     }
                 }
-                if (payload.job) {
+                if (Number.isInteger(payload.job)) {
                     payload.job = jobExists(payload.job) ? payload.job : null;
+                }
+                if (Number.isInteger(payload.house)
+                    && context.rootGetters["houses/exists"](payload.house)
+                ) {
+                    payload.house = parseInt(payload.house);
                 }
 
                 context.commit('update', {

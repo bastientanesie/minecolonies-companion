@@ -19,6 +19,13 @@
             <option v-for="job in availableJobs" :key="job.id" :value="job.id">{{ job.name }}</option>
           </select>
         </li>
+        <li>
+          <label for="citizen_house">House</label>
+          <select name="house" id="citizen_house" v-model="house">
+            <option value="">Homeless</option>
+            <option v-for="house in availableHouses" :key="house.id" :value="house.id">{{ house.name }}</option>
+          </select>
+        </li>
         <li>Skills:
           <ul>
             <li v-for="skill in availableSkills" :key="skill.id">
@@ -51,8 +58,10 @@
             return {
                 availableSkills,
                 availableJobs,
+                availableHouses: this.$store.getters["houses/getSorted"],
                 name: this.citizen.name,
                 job: this.citizen.job || '',
+                house: this.citizen.house,
                 skills: Object.assign({}, this.citizen.skills)
             };
         },
@@ -72,6 +81,7 @@
                 await this.$store.dispatch('citizens/edit', {
                     citizenId: this.citizen.id,
                     name: this.name,
+                    house: this.house,
                     skills: this.skills
                 });
 

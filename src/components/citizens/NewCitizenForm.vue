@@ -16,7 +16,7 @@
           <label for="citizen_job">Job</label>
           <select name="job" id="citizen_job" v-model="newCitizen.job">
             <option value="">Unemployed</option>
-            <option v-for="job in jobs" :key="job.id" :value="job.id">{{ job.name }}</option>
+            <option v-for="job in availableJobs" :key="job.id" :value="job.id">{{ job.name }}</option>
           </select>
         </li>
         <li>
@@ -28,7 +28,7 @@
         </li>
         <li>Skills:
           <ul>
-            <li v-for="skill in skills" :key="skill.id">
+            <li v-for="skill in availableSkills" :key="skill.id">
               <label :for="`citizen_skill_${skill.id}`">{{ skill.name }}</label>
               <input :name="`skills[${skill.id}]`" :id="`citizen_skill_${skill.id}`" v-model="newCitizen.skills[skill.id]" type="number" min="1">
             </li>
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-    import skills from '../../domain/skills';
-    import jobs from '../../domain/jobs';
+    import availableSkills from '../../domain/skills';
+    import availableJobs from '../../domain/jobs';
     import Modal from '../Modal';
 
     /**
@@ -56,8 +56,8 @@
         data() {
             return {
                 newCitizen: this.getInitialState(),
-                skills,
-                jobs,
+                availableSkills,
+                availableJobs,
                 availableHouses: this.$store.getters["houses/getSorted"],
             };
         },
@@ -85,7 +85,7 @@
                     skills: {}
                 };
 
-                skills.forEach((skill) => {
+                availableSkills.forEach((skill) => {
                     obj.skills[skill.id] = 1;
                 });
                 return obj;

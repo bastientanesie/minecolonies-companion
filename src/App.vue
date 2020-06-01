@@ -21,30 +21,20 @@
     </section>
 
     <NewHouseForm @close="isNewHouseFormVisible = false" v-if="isNewHouseFormVisible" />
-
-    <JobAssignmentModal
-      v-if="selectedCitizenForAssignment"
-      :selected-citizen="selectedCitizenForAssignment"
-      :citizens="citizens"
-      @close="$store.dispatch('jobs/selectToAssign', null)"
-    />
   </div>
 </template>
 
 <script>
     import CitizenList from './components/citizens/CitizenList.vue';
     import NewCitizenForm from './components/citizens/NewCitizenForm.vue';
-    import JobAssignmentModal from './components/citizens/AssignmentModal';
     import NewHouseForm from './components/houses/NewHouseForm';
     import HouseList from './components/houses/HouseList';
-    import { mapState } from 'vuex';
 
     export default {
         name: 'App',
         components: {
             CitizenList,
             NewCitizenForm,
-            JobAssignmentModal,
             NewHouseForm,
             HouseList
         },
@@ -55,19 +45,6 @@
             };
         },
         computed: {
-            // // 3 ways to declare computed properties and access Vuex store
-            // citizens() {
-            //     return this.$store.state.citizen.citizens;
-            // },
-            // ...mapState({
-            //     citizens: (state) => state.citizen.citizens,
-            // }),
-            ...mapState('citizens', [
-                'editedCitizen'
-            ]),
-            ...mapState('jobs', {
-                selectedCitizenForAssignment: (state) => state.selectedCitizen,
-            }),
             houses() {
                 return this.$store.getters[`houses/getSorted`];
             },

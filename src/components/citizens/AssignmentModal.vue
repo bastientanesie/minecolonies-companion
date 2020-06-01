@@ -77,7 +77,7 @@
         },
         methods: {
             closeForm() {
-                this.$store.dispatch('jobs/selectToAssign', null)
+                this.$emit('close');
             },
             findJobById(jobId) {
                 return findJobById(jobId);

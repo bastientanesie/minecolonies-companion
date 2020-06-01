@@ -7,26 +7,36 @@
         <li class="citizen-list-header-item mod-house">House</li>
         <li class="citizen-list-header-item mod-actions"></li>
       </ul>
-      <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" @edit="onEdit" />
+      <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" @edit="onEdit" @assignJob="onAssignJob" />
     </section>
 
     <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" @close="editedCitizen = null" />
+
+    <JobAssignmentModal
+      v-if="assigningCitizen !== null"
+      :selected-citizen="assigningCitizen"
+      :citizens="items"
+      @close="assigningCitizen = null"
+    />
   </div>
 </template>
 
 <script>
     import CitizenListItem from './CitizenListItem';
     import EditCitizenForm from './EditCitizenForm';
+    import JobAssignmentModal from './AssignmentModal';
 
     export default {
         name: "CitizenList",
         components: {
             CitizenListItem,
-            EditCitizenForm
+            EditCitizenForm,
+            JobAssignmentModal
         },
         data() {
             return {
                 editedCitizen: null,
+                assigningCitizen: null,
             };
         },
         props: {
@@ -38,6 +48,9 @@
         methods: {
             onEdit(citizen) {
                 this.editedCitizen = citizen;
+            },
+            onAssignJob(citizen) {
+                this.assigningCitizen = citizen;
             },
         },
     }

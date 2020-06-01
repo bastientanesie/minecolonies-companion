@@ -1,4 +1,4 @@
-export default class Citizen {
+export default class House {
     id;
     name;
     bedCount;
@@ -11,7 +11,7 @@ export default class Citizen {
 
     static fromJson(json) {
         // @todo data validation
-        return new Citizen(
+        return new House(
             json.id,
             json.name,
             json.beds

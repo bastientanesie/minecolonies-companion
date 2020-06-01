@@ -7,10 +7,18 @@
         <li class="citizen-list-header-item mod-house">House</li>
         <li class="citizen-list-header-item mod-actions"></li>
       </ul>
-      <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" @edit="onEdit" @assignJob="onAssignJob" />
+      <CitizenListItem v-for="citizen in items" :key="citizen.id"
+        :citizen="citizen"
+        @edit="onEdit"
+        @assignJob="onAssignJob"
+      />
     </section>
 
-    <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" @close="editedCitizen = null" />
+    <EditCitizenForm
+      v-if="editedCitizen !== null"
+      :citizen="editedCitizen"
+      @close="editedCitizen = null"
+    />
 
     <JobAssignmentModal
       v-if="assigningCitizen !== null"

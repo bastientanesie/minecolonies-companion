@@ -5,22 +5,22 @@
     <section>
       <h2>Citizens</h2>
       <p v-show="citizens.length < 1">Start by adding a citizen, click on the button below.</p>
-      <CitizenList :items="citizens" v-show="citizens.length > 0" />
+      <CitizenList v-show="citizens.length > 0" :items="citizens" />
 
       <button type="button" @click.prevent="showNewCitizenForm">Add a citizen</button>
     </section>
 
-    <NewCitizenForm @close="isNewCitizenFormVisible = false" v-if="isNewCitizenFormVisible" />
+    <NewCitizenForm v-if="isNewCitizenFormVisible" @close="isNewCitizenFormVisible = false" />
 
     <section>
       <h2>Houses</h2>
       <p v-show="houses.length < 1">Start by adding a house, click on the button below.</p>
-      <HouseList :items="houses" v-show="houses.length > 0" />
+      <HouseList v-show="houses.length > 0" :items="houses" />
 
       <button type="button" @click.prevent="isNewHouseFormVisible = true">Add a house</button>
     </section>
 
-    <NewHouseForm @close="isNewHouseFormVisible = false" v-if="isNewHouseFormVisible" />
+    <NewHouseForm v-if="isNewHouseFormVisible" @close="isNewHouseFormVisible = false" />
   </div>
 </template>
 

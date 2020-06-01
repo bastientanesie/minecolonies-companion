@@ -6,10 +6,17 @@
         <li class="house-list-header-item mod-job">Beds</li>
         <li class="house-list-header-item mod-actions"></li>
       </ul>
-      <HouseListItem v-for="house in items" :key="house.id" :house="house" @edit="onEdit" />
+      <HouseListItem v-for="house in items" :key="house.id"
+        :house="house"
+        @edit="onEdit"
+      />
     </section>
 
-    <EditHouseForm :house="editedHouse" v-if="editedHouse !== null" @close="editedHouse = null" />
+    <EditHouseForm
+      v-if="editedHouse !== null"
+      :house="editedHouse"
+      @close="editedHouse = null"
+    />
   </div>
 </template>
 

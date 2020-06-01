@@ -11,7 +11,6 @@
     </section>
 
     <NewCitizenForm @close="isNewCitizenFormVisible = false" v-if="isNewCitizenFormVisible" />
-    <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" />
 
     <section>
       <h2>Houses</h2>
@@ -35,7 +34,6 @@
 <script>
     import CitizenList from './components/citizens/CitizenList.vue';
     import NewCitizenForm from './components/citizens/NewCitizenForm.vue';
-    import EditCitizenForm from './components/citizens/EditCitizenForm';
     import JobAssignmentModal from './components/citizens/AssignmentModal';
     import NewHouseForm from './components/houses/NewHouseForm';
     import HouseList from './components/houses/HouseList';
@@ -44,7 +42,6 @@
     export default {
         name: 'App',
         components: {
-            EditCitizenForm,
             CitizenList,
             NewCitizenForm,
             JobAssignmentModal,

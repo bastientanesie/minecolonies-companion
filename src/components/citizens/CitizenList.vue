@@ -1,29 +1,45 @@
 <template>
-  <section class="citizen-list">
-    <ul class="citizen-list-header">
-      <li class="citizen-list-header-item mod-name">Citizen</li>
-      <li class="citizen-list-header-item mod-job">Job</li>
-      <li class="citizen-list-header-item mod-house">House</li>
-      <li class="citizen-list-header-item mod-actions"></li>
-    </ul>
-    <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" />
-  </section>
+  <div>
+    <section class="citizen-list">
+      <ul class="citizen-list-header">
+        <li class="citizen-list-header-item mod-name">Citizen</li>
+        <li class="citizen-list-header-item mod-job">Job</li>
+        <li class="citizen-list-header-item mod-house">House</li>
+        <li class="citizen-list-header-item mod-actions"></li>
+      </ul>
+      <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" @edit="onEdit" />
+    </section>
+
+    <EditCitizenForm :citizen="editedCitizen" v-if="editedCitizen !== null" @close="editedCitizen = null" />
+  </div>
 </template>
 
 <script>
     import CitizenListItem from './CitizenListItem';
+    import EditCitizenForm from './EditCitizenForm';
 
     export default {
         name: "CitizenList",
         components: {
-            CitizenListItem
+            CitizenListItem,
+            EditCitizenForm
+        },
+        data() {
+            return {
+                editedCitizen: null,
+            };
         },
         props: {
             items: {
                 type: Array,
                 required: true
-            }
-        }
+            },
+        },
+        methods: {
+            onEdit(citizen) {
+                this.editedCitizen = citizen;
+            },
+        },
     }
 </script>
 

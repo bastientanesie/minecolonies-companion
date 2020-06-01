@@ -88,7 +88,7 @@
                 this.closeForm();
             },
             closeForm() {
-                this.$store.dispatch('citizens/selectToEdit', null);
+                this.$emit('close');
             }
         }
     }

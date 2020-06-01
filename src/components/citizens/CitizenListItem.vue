@@ -5,7 +5,7 @@
     <p class="citizen-list-item-column mod-house">{{ houseName }}</p>
     <div class="citizen-list-item-column mod-actions">
       <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('jobs/selectToAssign', citizen.id)">Assign</button>
-      <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('citizens/selectToEdit', citizen.id)">Edit</button>
+      <button class="citizen-list-item-action" type="button" @click.prevent="$emit('edit', citizen)">Edit</button>
       <button class="citizen-list-item-action" type="button" @click.prevent="handleDelete">Delete</button>
     </div>
   </article>

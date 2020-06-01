@@ -7,7 +7,6 @@ export default {
     state() {
         return {
             citizens: Storage.fetchAll(),
-            editedCitizen: null
         };
     },
     getters: {
@@ -50,9 +49,6 @@ export default {
             state.citizens.splice(index, 1);
             Storage.save(state.citizens);
         },
-        setEditedCitizen(state, citizen) {
-            state.editedCitizen = citizen;
-        }
     },
     actions: {
         add(context, {name, job, house, skills}) {
@@ -129,22 +125,6 @@ export default {
                     citizen,
                     payload
                 });
-                return resolve();
-            });
-        },
-        selectToEdit(context, citizenId) {
-            return new Promise((resolve, reject) => {
-                if (citizenId === null) {
-                    context.commit('setEditedCitizen', null);
-                    return resolve();
-                }
-
-                const citizen = context.getters.findById(citizenId);
-                if (citizen === null) {
-                    return reject(`Could not find citizen in database`);
-                }
-
-                context.commit('setEditedCitizen', citizen);
                 return resolve();
             });
         },

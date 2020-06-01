@@ -3,6 +3,7 @@
     <ul class="citizen-list-header">
       <li class="citizen-list-header-item mod-name">Citizen</li>
       <li class="citizen-list-header-item mod-job">Job</li>
+      <li class="citizen-list-header-item mod-house">House</li>
       <li class="citizen-list-header-item mod-actions"></li>
     </ul>
     <CitizenListItem v-for="citizen in items" :key="citizen.id" :citizen="citizen" />
@@ -49,12 +50,15 @@
     padding: 5px 10px;
   }
   .citizen-list-header-item.mod-name {
-    flex: 1 1 40%;
+    flex: 1 1 30%;
   }
   .citizen-list-header-item.mod-job {
-    flex: 1 1 30%;
+    flex: 1 1 15%;
+  }
+  .citizen-list-header-item.mod-house {
+    flex: 1 1 15%;
   }
   .citizen-list-header-item.mod-actions {
-    flex: 1 1 30%;
+    flex: 1 1 20%;
   }
 </style>

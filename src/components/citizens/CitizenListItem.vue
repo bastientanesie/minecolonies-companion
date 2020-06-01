@@ -2,6 +2,7 @@
   <article class="citizen-list-item">
     <p class="citizen-list-item-column mod-name">{{ citizen.name }}</p>
     <p class="citizen-list-item-column mod-job">{{ jobTitle }}</p>
+    <p class="citizen-list-item-column mod-house">{{ houseName }}</p>
     <div class="citizen-list-item-column mod-actions">
       <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('jobs/selectToAssign', citizen.id)">Assign</button>
       <button class="citizen-list-item-action" type="button" @click.prevent="$store.dispatch('citizens/selectToEdit', citizen.id)">Edit</button>
@@ -29,7 +30,16 @@
                 }
                 const job = findJobById(this.citizen.job);
                 return (job) ? job.name : 'Unemployed';
-            }
+            },
+            houseName() {
+                if (! this.citizen.house
+                    && this.citizen.house !== 0
+                ) {
+                    return 'Homeless';
+                }
+                const house = this.$store.getters["houses/findById"](this.citizen.house);
+                return (house) ? house.name : 'Homeless';
+            },
         },
         methods: {
             async handleDelete() {
@@ -57,13 +67,16 @@
     padding: 5px 10px;
   }
   .citizen-list-item-column.mod-name {
-    flex: 1 1 40%;
+    flex: 1 1 30%;
   }
   .citizen-list-item-column.mod-job {
-    flex: 1 1 30%;
+    flex: 1 1 15%;
+  }
+  .citizen-list-item-column.mod-house {
+    flex: 1 1 15%;
   }
   .citizen-list-item-column.mod-actions {
-    flex: 1 1 30%;
+    flex: 1 1 20%;
   }
   .citizen-list-item:hover .citizen-list-item-column {
     background-color: rgba(0, 0, 0, 0.05);

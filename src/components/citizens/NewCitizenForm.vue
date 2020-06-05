@@ -23,7 +23,9 @@
           <label for="citizen_house">House</label>
           <select name="house" id="citizen_house" v-model="newCitizen.house">
             <option value="">Homeless</option>
-            <option v-for="house in availableHouses" :key="house.id" :value="house.id">{{ house.name }}</option>
+            <option v-for="house in availableHouses" :key="house.id" :value="house.id" :disabled="house.bedCount <= house.inhabitants.length">
+              {{ house.name }} ({{ house.inhabitants.length }}&nbsp;/&nbsp;{{ house.bedCount }})
+            </option>
           </select>
         </li>
         <li>Skills:

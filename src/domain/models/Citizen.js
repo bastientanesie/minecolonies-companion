@@ -2,7 +2,6 @@ export default class Citizen {
     id;
     name;
     job = null;
-    house = null;
     skills = {};
 
     constructor(id, name, skills) {
@@ -18,11 +17,10 @@ export default class Citizen {
             json.name,
             json.skills
         );
-        if (json.job !== null) {
+        if (Object.prototype.hasOwnProperty.call(json, 'job')
+            && json.job !== null
+        ) {
             instance.job = json.job;
-        }
-        if (json.house !== null) {
-            instance.house = parseInt(json.house);
         }
         return instance;
     }
@@ -31,7 +29,6 @@ export default class Citizen {
         return {
             name: this.name,
             job: this.job,
-            house: this.house,
             skills: this.skills
         };
     }

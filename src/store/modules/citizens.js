@@ -35,9 +35,6 @@ export default {
             if (Object.prototype.hasOwnProperty.call(payload, 'job')) {
                 citizen.job = payload.job;
             }
-            if (Object.prototype.hasOwnProperty.call(payload, 'house')) {
-                citizen.house = payload.house;
-            }
             if (Object.prototype.hasOwnProperty.call(payload, 'skills')) {
                 citizen.skills = payload.skills;
             }
@@ -51,7 +48,7 @@ export default {
         },
     },
     actions: {
-        add(context, {name, job, house, skills}) {
+        add(context, {name, job, skills}) {
             return new Promise((resolve) => {
                 // filtering & sanitizing
                 for (const key in skills) {
@@ -69,16 +66,9 @@ export default {
 
                 citizen.job = (job && jobExists(job)) ? job : null;
 
-                if (Number.isInteger(house)
-                    && context.rootGetters["houses/exists"](house)
-                ) {
-                    citizen.house = parseInt(house);
-                } else {
-                    citizen.house = null;
-                }
-
                 context.commit('create', citizen);
-                return resolve();
+
+                return resolve(citizen);
             });
         },
         remove(context, citizenId) {
@@ -114,11 +104,6 @@ export default {
                 }
                 if (Number.isInteger(payload.job)) {
                     payload.job = jobExists(payload.job) ? payload.job : null;
-                }
-                if (Number.isInteger(payload.house)
-                    && context.rootGetters["houses/exists"](payload.house)
-                ) {
-                    payload.house = parseInt(payload.house);
                 }
 
                 context.commit('update', {

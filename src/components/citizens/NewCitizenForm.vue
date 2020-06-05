@@ -68,12 +68,18 @@
                     return;
                 }
 
-                await this.$store.dispatch('citizens/add', {
+                const citizen = await this.$store.dispatch('citizens/add', {
                     name: this.newCitizen.name,
                     job: this.newCitizen.job,
-                    house: this.newCitizen.house,
                     skills: this.newCitizen.skills
                 });
+
+                if (this.newCitizen.house !== '') {
+                    await this.$store.dispatch('houses/assignInhabitant', {
+                        houseId: this.newCitizen.house,
+                        inhabitantId: citizen.id
+                    });
+                }
 
                 this.closeForm();
             },

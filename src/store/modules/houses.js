@@ -14,6 +14,11 @@ export default {
                 return house.id === houseId;
             });
         },
+        findByInhabitant: (state) => (inhabitantId) => {
+            return state.houses.find((house) => {
+                return house.inhabitants.indexOf(inhabitantId) >= 0;
+            });
+        },
         exists: (stat, getters) => (houseId) => {
             return getters.findById(houseId) !== null;
         },
@@ -37,7 +42,8 @@ export default {
                 );
 
                 context.commit('create', house);
-                return resolve();
+
+                return resolve(house);
             });
         },
         edit(context, {houseId, ...payload}) {
@@ -74,6 +80,51 @@ export default {
                 return resolve();
             });
         },
+        async assignInhabitant(context, { houseId, inhabitantId }) {
+            const house = context.getters.findById(houseId);
+            if (! house) {
+                throw new Error(`Could not find house in database`);
+            }
+
+            if (house.inhabitants.length >= house.bedCount) {
+                throw new Error(`This house is full`);
+            }
+
+            if (house.inhabitants.indexOf(inhabitantId) >= 0) {
+                // Inhabitant already assigned to this house
+                return;
+            }
+
+            // Remove inhabitant from its current house
+            const currentHouse = context.getters.findByInhabitant(inhabitantId);
+            if (currentHouse) {
+                context.commit('deleteInhabitant', {
+                    house: currentHouse,
+                    inhabitantId
+                });
+            }
+
+            context.commit('addInhabitant', {
+                house,
+                inhabitantId
+            });
+        },
+        async removeInhabitant(context, { houseId, inhabitantId }) {
+            const house = context.getters.findById(houseId);
+            if (! house) {
+                throw new Error(`Could not find house in database`);
+            }
+
+            if (house.inhabitants.indexOf(inhabitantId) < 0) {
+                // Inhabitant not assigned to this house
+                return;
+            }
+
+            context.commit('deleteInhabitant', {
+                house,
+                inhabitantId
+            });
+        },
     },
     mutations: {
         create(state, house) {
@@ -95,6 +146,25 @@ export default {
         },
         deleteAtIndex(state, index) {
             state.houses.splice(index, 1);
+            Storage.save(state.houses);
+        },
+        addInhabitant(state, { house, inhabitantId }) {
+            const houseIndex = state.houses.indexOf(house);
+
+            house.inhabitants.push(inhabitantId);
+
+            state.houses[houseIndex] = house;
+            Storage.save(state.houses);
+        },
+        deleteInhabitant(state, { house, inhabitantId }) {
+            const houseIndex = state.houses.indexOf(house);
+
+            house.inhabitants.splice(
+                house.inhabitants.indexOf(inhabitantId),
+                1
+            );
+
+            state.houses[houseIndex] = house;
             Storage.save(state.houses);
         },
     },

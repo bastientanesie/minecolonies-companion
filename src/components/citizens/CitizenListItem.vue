@@ -13,6 +13,7 @@
 
 <script>
     import Citizen from '../../domain/models/Citizen';
+    import House from '../../domain/models/House';
     import { findById as findJobById } from '../../domain/jobs';
 
     export default {
@@ -32,13 +33,8 @@
                 return (job) ? job.name : 'Unemployed';
             },
             houseName() {
-                if (! this.citizen.house
-                    && this.citizen.house !== 0
-                ) {
-                    return 'Homeless';
-                }
-                const house = this.$store.getters["houses/findById"](this.citizen.house);
-                return (house) ? house.name : 'Homeless';
+                const house = this.$store.getters['houses/findByInhabitant'](this.citizen.id);
+                return (house instanceof House) ? house.name : 'Homeless';
             },
         },
         methods: {

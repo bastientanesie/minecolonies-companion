@@ -1,7 +1,7 @@
 <template>
   <article class="house-list-item">
     <p class="house-list-item-column mod-name">{{ house.name }}</p>
-    <p class="house-list-item-column mod-beds">{{ house.bedCount }}</p>
+    <p class="house-list-item-column mod-beds">{{ house.inhabitants.length }}&nbsp;/&nbsp;{{ house.bedCount }}</p>
     <div class="house-list-item-column mod-actions">
       <button class="house-list-item-action" type="button" @click.prevent="$emit('edit', house)">Edit</button>
       <button class="house-list-item-action" type="button" @click.prevent="handleDelete">Delete</button>

@@ -98,6 +98,11 @@ export default {
             // Remove inhabitant from its current house
             const currentHouse = context.getters.findByInhabitant(inhabitantId);
             if (currentHouse) {
+                if (currentHouse.id === house.id) {
+                    // Same house, nothing to do
+                    return;
+                }
+
                 context.commit('deleteInhabitant', {
                     house: currentHouse,
                     inhabitantId

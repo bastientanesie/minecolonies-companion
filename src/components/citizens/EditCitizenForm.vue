@@ -88,14 +88,14 @@
                     skills: this.newSkills
                 });
 
-                if (this.newHouse !== null && this.newHouse !== '') {
+                if (this.newHouse !== '') {
                     await this.$store.dispatch('houses/assignInhabitant', {
                         houseId: this.newHouse,
                         inhabitantId: this.citizen.id
                     });
-                } else if (this.currentHouse !== null) {
+                } else {
                     await this.$store.dispatch('houses/removeInhabitant', {
-                        houseId: this.newHouse,
+                        houseId: this.currentHouse.id,
                         inhabitantId: this.citizen.id
                     });
                 }

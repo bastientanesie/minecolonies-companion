@@ -17,7 +17,9 @@ export default class Citizen {
             json.name,
             json.skills
         );
-        if (json.job) {
+        if (Object.prototype.hasOwnProperty.call(json, 'job')
+            && json.job !== null
+        ) {
             instance.job = json.job;
         }
         return instance;

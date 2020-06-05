@@ -7,7 +7,6 @@ export default {
     state() {
         return {
             citizens: Storage.fetchAll(),
-            editedCitizen: null
         };
     },
     getters: {
@@ -30,13 +29,13 @@ export default {
         update(state, { citizen, payload }) {
             const citizenIndex = state.citizens.indexOf(citizen);
 
-            if (payload.name) {
+            if (Object.prototype.hasOwnProperty.call(payload, 'name')) {
                 citizen.name = payload.name;
             }
-            if (payload.job) {
+            if (Object.prototype.hasOwnProperty.call(payload, 'job')) {
                 citizen.job = payload.job;
             }
-            if (payload.skills) {
+            if (Object.prototype.hasOwnProperty.call(payload, 'skills')) {
                 citizen.skills = payload.skills;
             }
 
@@ -47,9 +46,6 @@ export default {
             state.citizens.splice(index, 1);
             Storage.save(state.citizens);
         },
-        setEditedCitizen(state, citizen) {
-            state.editedCitizen = citizen;
-        }
     },
     actions: {
         add(context, {name, job, skills}) {
@@ -71,7 +67,8 @@ export default {
                 citizen.job = (job && jobExists(job)) ? job : null;
 
                 context.commit('create', citizen);
-                return resolve();
+
+                return resolve(citizen);
             });
         },
         remove(context, citizenId) {
@@ -105,7 +102,7 @@ export default {
                         payload.skills[key] = parseInt(payload.skills[key]);
                     }
                 }
-                if (payload.job) {
+                if (Number.isInteger(payload.job)) {
                     payload.job = jobExists(payload.job) ? payload.job : null;
                 }
 
@@ -113,22 +110,6 @@ export default {
                     citizen,
                     payload
                 });
-                return resolve();
-            });
-        },
-        selectToEdit(context, citizenId) {
-            return new Promise((resolve, reject) => {
-                if (citizenId === null) {
-                    context.commit('setEditedCitizen', null);
-                    return resolve();
-                }
-
-                const citizen = context.getters.findById(citizenId);
-                if (citizen === null) {
-                    return reject(`Could not find citizen in database`);
-                }
-
-                context.commit('setEditedCitizen', citizen);
                 return resolve();
             });
         },

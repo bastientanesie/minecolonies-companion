@@ -10,20 +10,22 @@
       <ul>
         <li>
           <label for="citizen_name">Name</label>
-          <input name="name" id="citizen_name" v-model="name" type="text" v-focus>
+          <input name="name" id="citizen_name" v-model="newName" type="text" v-focus>
         </li>
         <li>
-          <label for="citizen_job">Job</label>
-          <select name="job" id="citizen_job" v-model="job" disabled>
-            <option value="">Unemployed</option>
-            <option v-for="job in availableJobs" :key="job.id" :value="job.id">{{ job.name }}</option>
+          <label for="citizen_house">House</label>
+          <select name="house" id="citizen_house" v-model="newHouse">
+            <option value="">Homeless</option>
+            <option v-for="house in availableHouses" :key="house.id" :value="house.id" :disabled="house.bedCount <= house.inhabitants.length">
+              {{ house.name }} ({{ house.inhabitants.length }}&nbsp;/&nbsp;{{ house.bedCount }})
+            </option>
           </select>
         </li>
         <li>Skills:
           <ul>
             <li v-for="skill in availableSkills" :key="skill.id">
               <label :for="`citizen_skill_${skill.id}`">{{ skill.name }}</label>
-              <input :name="`skills[${skill.id}]`" :id="`citizen_skill_${skill.id}`" v-model="skills[skill.id]" type="number" min="1">
+              <input :name="`skills[${skill.id}]`" :id="`citizen_skill_${skill.id}`" v-model="newSkills[skill.id]" type="number" min="1">
             </li>
           </ul>
         </li>
@@ -35,7 +37,6 @@
 
 <script>
     import availableSkills from '../../domain/skills';
-    import availableJobs from '../../domain/jobs';
     import Citizen from '../../domain/models/Citizen';
     import Modal from '../Modal';
 
@@ -48,12 +49,14 @@
             Modal
         },
         data() {
+            const currentHouse = this.$store.getters['houses/findByInhabitant'](this.citizen.id);
             return {
                 availableSkills,
-                availableJobs,
-                name: this.citizen.name,
-                job: this.citizen.job || '',
-                skills: Object.assign({}, this.citizen.skills)
+                availableHouses: this.$store.getters['houses/getSorted'],
+                currentHouse: currentHouse || null,
+                newName: this.citizen.name,
+                newHouse: (currentHouse) ? currentHouse.id : '',
+                newSkills: Object.assign({}, this.citizen.skills)
             };
         },
         props: {
@@ -64,21 +67,33 @@
         },
         methods: {
             async handleSubmit() {
-                const name = this.name && this.name.trim();
-                if (! name) {
+                const newName = this.newName && this.newName.trim();
+                if (! newName) {
                     return;
                 }
 
                 await this.$store.dispatch('citizens/edit', {
                     citizenId: this.citizen.id,
-                    name: this.name,
-                    skills: this.skills
+                    name: newName,
+                    skills: this.newSkills
                 });
+
+                if (this.newHouse !== '') {
+                    await this.$store.dispatch('houses/assignInhabitant', {
+                        houseId: this.newHouse,
+                        inhabitantId: this.citizen.id
+                    });
+                } else {
+                    await this.$store.dispatch('houses/removeInhabitant', {
+                        houseId: this.currentHouse.id,
+                        inhabitantId: this.citizen.id
+                    });
+                }
 
                 this.closeForm();
             },
             closeForm() {
-                this.$store.dispatch('citizens/selectToEdit', null);
+                this.$emit('close');
             }
         }
     }

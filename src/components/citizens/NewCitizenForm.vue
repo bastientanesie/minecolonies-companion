@@ -13,15 +13,17 @@
           <input name="name" id="citizen_name" v-model="newCitizen.name" type="text" v-focus>
         </li>
         <li>
-          <label for="citizen_job">Job</label>
-          <select name="job" id="citizen_job" v-model="newCitizen.job">
-            <option value="">Unemployed</option>
-            <option v-for="job in jobs" :key="job.id" :value="job.id">{{ job.name }}</option>
+          <label for="citizen_house">House</label>
+          <select name="house" id="citizen_house" v-model="newCitizen.house">
+            <option value="">Homeless</option>
+            <option v-for="house in availableHouses" :key="house.id" :value="house.id" :disabled="house.bedCount <= house.inhabitants.length">
+              {{ house.name }} ({{ house.inhabitants.length }}&nbsp;/&nbsp;{{ house.bedCount }})
+            </option>
           </select>
         </li>
         <li>Skills:
           <ul>
-            <li v-for="skill in skills" :key="skill.id">
+            <li v-for="skill in availableSkills" :key="skill.id">
               <label :for="`citizen_skill_${skill.id}`">{{ skill.name }}</label>
               <input :name="`skills[${skill.id}]`" :id="`citizen_skill_${skill.id}`" v-model="newCitizen.skills[skill.id]" type="number" min="1">
             </li>
@@ -34,8 +36,7 @@
 </template>
 
 <script>
-    import skills from '../../domain/skills';
-    import jobs from '../../domain/jobs';
+    import availableSkills from '../../domain/skills';
     import Modal from '../Modal';
 
     /**
@@ -49,8 +50,8 @@
         data() {
             return {
                 newCitizen: this.getInitialState(),
-                skills,
-                jobs
+                availableSkills,
+                availableHouses: this.$store.getters["houses/getSorted"],
             };
         },
         methods: {
@@ -60,22 +61,28 @@
                     return;
                 }
 
-                await this.$store.dispatch('citizens/add', {
+                const citizen = await this.$store.dispatch('citizens/add', {
                     name: this.newCitizen.name,
-                    job: this.newCitizen.job,
                     skills: this.newCitizen.skills
                 });
+
+                if (this.newCitizen.house !== '') {
+                    await this.$store.dispatch('houses/assignInhabitant', {
+                        houseId: this.newCitizen.house,
+                        inhabitantId: citizen.id
+                    });
+                }
 
                 this.closeForm();
             },
             getInitialState() {
                 const obj = {
                     name: '',
-                    job: '',
+                    house: '',
                     skills: {}
                 };
 
-                skills.forEach((skill) => {
+                availableSkills.forEach((skill) => {
                     obj.skills[skill.id] = 1;
                 });
                 return obj;

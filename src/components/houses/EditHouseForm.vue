@@ -14,7 +14,7 @@
         </li>
         <li>
           <label for="house_beds">Beds</label>
-          <input name="beds" id="house_beds" v-model="beds" type="number" min="1">
+          <input name="beds" id="house_beds" v-model="beds" type="number" :min="minimumBedValue">
         </li>
       </ul>
       <button type="submit" style="display: none;"></button>
@@ -45,6 +45,13 @@
                 type: House,
                 required: true
             }
+        },
+        computed: {
+            minimumBedValue() {
+                return (this.house.inhabitants.length > 0)
+                    ? this.house.inhabitants.length
+                    : 1;
+            },
         },
         methods: {
             async handleSubmit() {

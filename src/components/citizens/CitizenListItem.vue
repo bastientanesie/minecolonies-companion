@@ -4,7 +4,7 @@
     <p class="citizen-list-item-column mod-job">{{ jobTitle }}</p>
     <p class="citizen-list-item-column mod-house">{{ houseName }}</p>
     <div class="citizen-list-item-column mod-actions">
-      <button class="citizen-list-item-action" type="button" @click.prevent="$emit('assignJob', citizen)">Assign</button>
+      <button class="citizen-list-item-action" type="button" @click.prevent="$emit('assignJob', citizen)">Job</button>
       <button class="citizen-list-item-action" type="button" @click.prevent="$emit('edit', citizen)">Edit</button>
       <button class="citizen-list-item-action" type="button" @click.prevent="handleDelete">Delete</button>
     </div>

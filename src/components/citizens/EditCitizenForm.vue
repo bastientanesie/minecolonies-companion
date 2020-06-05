@@ -13,13 +13,6 @@
           <input name="name" id="citizen_name" v-model="newName" type="text" v-focus>
         </li>
         <li>
-          <label for="citizen_job">Job</label>
-          <select name="job" id="citizen_job" v-model="newJob" disabled>
-            <option value="">Unemployed</option>
-            <option v-for="job in availableJobs" :key="job.id" :value="job.id">{{ job.name }}</option>
-          </select>
-        </li>
-        <li>
           <label for="citizen_house">House</label>
           <select name="house" id="citizen_house" v-model="newHouse">
             <option value="">Homeless</option>
@@ -44,7 +37,6 @@
 
 <script>
     import availableSkills from '../../domain/skills';
-    import availableJobs from '../../domain/jobs';
     import Citizen from '../../domain/models/Citizen';
     import Modal from '../Modal';
 
@@ -60,11 +52,9 @@
             const currentHouse = this.$store.getters['houses/findByInhabitant'](this.citizen.id);
             return {
                 availableSkills,
-                availableJobs,
                 availableHouses: this.$store.getters['houses/getSorted'],
                 currentHouse: currentHouse || null,
                 newName: this.citizen.name,
-                newJob: this.citizen.job || '',
                 newHouse: (currentHouse) ? currentHouse.id : '',
                 newSkills: Object.assign({}, this.citizen.skills)
             };

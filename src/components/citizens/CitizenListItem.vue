@@ -32,9 +32,11 @@
                 const job = findJobById(this.citizen.job);
                 return (job) ? job.name : 'Unemployed';
             },
+            house() {
+                return this.$store.getters['houses/findByInhabitant'](this.citizen.id);
+            },
             houseName() {
-                const house = this.$store.getters['houses/findByInhabitant'](this.citizen.id);
-                return (house instanceof House) ? house.name : 'Homeless';
+                return (this.house instanceof House) ? this.house.name : 'Homeless';
             },
         },
         methods: {
@@ -43,6 +45,13 @@
                     return;
                 }
                 await this.$store.dispatch('citizens/remove', this.citizen.id);
+
+                if (this.house instanceof House) {
+                    await this.$store.dispatch('houses/removeInhabitant', {
+                        houseId: this.house.id,
+                        inhabitantId: this.citizen.id
+                    });
+                }
             }
         }
     }
